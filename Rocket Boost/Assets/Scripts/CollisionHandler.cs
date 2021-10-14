@@ -17,6 +17,8 @@ public class CollisionHandler : MonoBehaviour
     RocketMovement rocketMovementScript;
     AudioSource myAudioSource;
 
+    bool isTransitioningStates = false;
+
     void Start()
     {
         rocketMovementScript = GetComponent<RocketMovement>();
@@ -25,20 +27,23 @@ public class CollisionHandler : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
+        if (isTransitioningStates)
+            return;
+
         switch (other.gameObject.tag)
         {
             case "Friendly":
                 // TODO: Small Glow VFX?
                 break;
-            
+
             case "Fuel":
                 // TODO: Add Fuel
                 break;
-            
+
             case "Finish":
                 StartCoroutine(StartVictorySequence(nextLevelDelay));
                 break;
-            
+
             default:
                 StartCoroutine(StartCrashSequence(crashDelay));
                 break;
@@ -66,8 +71,9 @@ public class CollisionHandler : MonoBehaviour
 
     IEnumerator StartVictorySequence(float waitTime)
     {
+        isTransitioningStates = true;
         // TODO: Add Victory VFX
-        myAudioSource.Stop(); // Temp workaround: Stops thrustSFX if crashed while spacebar was held down
+        myAudioSource.Stop();
         myAudioSource.PlayOneShot(victorySFX, victorySFXVolume);
         rocketMovementScript.enabled = false;
 
@@ -79,8 +85,9 @@ public class CollisionHandler : MonoBehaviour
 
     IEnumerator StartCrashSequence(float waitTime)
     {
+        isTransitioningStates = true;
         // TODO: Add Crash VFX
-        myAudioSource.Stop(); // Temp workaround: Stops thrustSFX if crashed while spacebar was held down
+        myAudioSource.Stop();
         myAudioSource.PlayOneShot(crashSFX, crashSFXVolume);
         rocketMovementScript.enabled = false;
 
