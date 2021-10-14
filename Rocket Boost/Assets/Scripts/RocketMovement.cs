@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class RocketMovement : MonoBehaviour
 {
+    [SerializeField] float mainThrust = 1000f;
+    [SerializeField] float rotationThrust = 200f;
+
     Rigidbody myRigidbody;
 
     void Start()
@@ -21,15 +24,20 @@ public class RocketMovement : MonoBehaviour
     void RotateRocket()
     {
         if (Input.GetKey(KeyCode.A))
-            Debug.Log("Left");
+            ApplyRotation(rotationThrust);
 
         else if (Input.GetKey(KeyCode.D))
-            Debug.Log("Right");
+            ApplyRotation(-rotationThrust);
     }
 
     void ThrustRocket()
     {
         if (Input.GetKey(KeyCode.Space))
-            myRigidbody.AddRelativeForce(Vector3.up);
+            myRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+    }
+
+    void ApplyRotation(float rotationThisFrame)
+    {
+        transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
     }
 }
