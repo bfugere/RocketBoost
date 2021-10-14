@@ -9,10 +9,12 @@ public class RocketMovement : MonoBehaviour
     [SerializeField] float rotationThrust = 200f;
 
     Rigidbody myRigidbody;
+    AudioSource myAudioSource;
 
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody>();
+        myAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -24,20 +26,30 @@ public class RocketMovement : MonoBehaviour
     void RotateRocket()
     {
         if (Input.GetKey(KeyCode.A))
-            ApplyRotation(rotationThrust);
+            ApplyRotation(Vector3.forward);
 
         else if (Input.GetKey(KeyCode.D))
-            ApplyRotation(-rotationThrust);
+            ApplyRotation(Vector3.back);
     }
 
     void ThrustRocket()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
+        {
             myRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+
+            // Thrust SFX
+            if (!myAudioSource.isPlaying)
+                myAudioSource.Play();
+        }
+        else
+            myAudioSource.Stop();
     }
 
-    void ApplyRotation(float rotationThisFrame)
+    void ApplyRotation(Vector3 vector)
     {
-        transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
+        myRigidbody.freezeRotation = true; // Manually overrides physics conflict.
+        transform.Rotate(vector * rotationThrust * Time.deltaTime);
+        myRigidbody.freezeRotation = false; // Enable physics system again.
     }
 }
