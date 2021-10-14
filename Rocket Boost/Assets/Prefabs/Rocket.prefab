@@ -128,7 +128,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -227,6 +227,7 @@ MonoBehaviour:
   mainThrust: 1000
   rotationThrust: 200
   thrustSFX: {fileID: 8300000, guid: f5370fd6c3488684080febfa65e55ca2, type: 3}
+  thrustSFXVolume: 1
 --- !u!114 &7132165624997514129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,3 +242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevelDelay: 2
   crashDelay: 2
+  victorySFX: {fileID: 8300000, guid: a808977b2b015e94082aac9c2a2fbb31, type: 3}
+  victorySFXVolume: 0.5
+  crashSFX: {fileID: 8300000, guid: d46c24b3224ce5b45994d85e0bc73f11, type: 3}
+  crashSFXVolume: 0.2

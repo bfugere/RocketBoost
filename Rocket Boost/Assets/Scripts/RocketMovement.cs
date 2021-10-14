@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class RocketMovement : MonoBehaviour
 {
+    [Header("Movement Data")]
     [SerializeField] float mainThrust = 1000f;
     [SerializeField] float rotationThrust = 200f;
+
+    [Header("SFX Data")]
+    [SerializeField] AudioClip thrustSFX;
+    [SerializeField] [Range(0, 1)] float thrustSFXVolume = 1f;
 
     Rigidbody myRigidbody;
     AudioSource myAudioSource;
@@ -37,7 +42,7 @@ public class RocketMovement : MonoBehaviour
 
             // Thrust SFX
             if (!myAudioSource.isPlaying)
-                myAudioSource.Play();
+                myAudioSource.PlayOneShot(thrustSFX, thrustSFXVolume);
         }
         else
             myAudioSource.Stop();

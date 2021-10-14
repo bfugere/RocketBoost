@@ -4,14 +4,23 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
+    [Header("Time Delay Data")]
     [SerializeField] float nextLevelDelay = 2f;
     [SerializeField] float crashDelay = 2f;
 
+    [Header("SFX Data")]
+    [SerializeField] AudioClip victorySFX;
+    [SerializeField] [Range(0, 1)] float victorySFXVolume = 0.5f;
+    [SerializeField] AudioClip crashSFX;
+    [SerializeField] [Range(0, 1)] float crashSFXVolume = 0.2f;
+
     RocketMovement rocketMovementScript;
+    AudioSource myAudioSource;
 
     void Start()
     {
         rocketMovementScript = GetComponent<RocketMovement>();
+        myAudioSource = GetComponent<AudioSource>();
     }
 
     void OnCollisionEnter(Collision other)
@@ -57,9 +66,9 @@ public class CollisionHandler : MonoBehaviour
 
     IEnumerator StartVictorySequence(float waitTime)
     {
-        // TODO: Add Victory SFX
         // TODO: Add Victory VFX
-        rocketMovementScript.GetComponent<AudioSource>().Stop();
+        myAudioSource.Stop(); // Temp workaround: Stops thrustSFX if crashed while spacebar was held down
+        myAudioSource.PlayOneShot(victorySFX, victorySFXVolume);
         rocketMovementScript.enabled = false;
 
         yield return new WaitForSeconds(waitTime);
@@ -70,9 +79,9 @@ public class CollisionHandler : MonoBehaviour
 
     IEnumerator StartCrashSequence(float waitTime)
     {
-        // TODO: Add Crash SFX
         // TODO: Add Crash VFX
-        rocketMovementScript.GetComponent<AudioSource>().Stop();
+        myAudioSource.Stop(); // Temp workaround: Stops thrustSFX if crashed while spacebar was held down
+        myAudioSource.PlayOneShot(crashSFX, crashSFXVolume);
         rocketMovementScript.enabled = false;
 
         yield return new WaitForSeconds(waitTime);
