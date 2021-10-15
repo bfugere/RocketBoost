@@ -20,7 +20,6 @@ public class CollisionHandler : MonoBehaviour
 
     RocketMovement rocketMovementScript;
     AudioSource myAudioSource;
-    BoxCollider myBoxCollider;
 
     bool isTransitioningStates = false;
     bool isDebugging = false;
@@ -30,7 +29,6 @@ public class CollisionHandler : MonoBehaviour
     {
         rocketMovementScript = GetComponent<RocketMovement>();
         myAudioSource = GetComponent<AudioSource>();
-        myBoxCollider = GetComponent<BoxCollider>();
     }
 
     void Update()
@@ -56,6 +54,10 @@ public class CollisionHandler : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.L))
                 LoadNextLevel();
+
+            if (Input.GetKeyDown(KeyCode.F))
+                // TODO Fueling System
+                Debug.Log("Refueled");
 
             if (Input.GetKeyDown(KeyCode.C))
             {
