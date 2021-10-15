@@ -20,18 +20,60 @@ public class CollisionHandler : MonoBehaviour
 
     RocketMovement rocketMovementScript;
     AudioSource myAudioSource;
+    BoxCollider myBoxCollider;
 
     bool isTransitioningStates = false;
+    bool isDebugging = false;
+    bool collisionsDisabled = false;
 
     void Start()
     {
         rocketMovementScript = GetComponent<RocketMovement>();
         myAudioSource = GetComponent<AudioSource>();
+        myBoxCollider = GetComponent<BoxCollider>();
+    }
+
+    void Update()
+    {
+        ToggleDebugMode();
+    }
+
+    void ToggleDebugMode()
+    {
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            if (!isDebugging)
+            {
+                isDebugging = true;
+                Debug.Log("Debugging Enabled!");
+                return;
+            }
+            isDebugging = false;
+            Debug.Log("Debugging Disabled.");
+        }
+
+        if (isDebugging)
+        {
+            if (Input.GetKeyDown(KeyCode.L))
+                LoadNextLevel();
+
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                if (!collisionsDisabled)
+                {
+                    collisionsDisabled = true;
+                    Debug.Log("Collisions Disabled!");
+                    return;
+                }
+                collisionsDisabled = false;
+                Debug.Log("Collisions Enabled.");
+            }
+        }
     }
 
     void OnCollisionEnter(Collision other)
     {
-        if (isTransitioningStates)
+        if (isTransitioningStates || collisionsDisabled)
             return;
 
         switch (other.gameObject.tag)
