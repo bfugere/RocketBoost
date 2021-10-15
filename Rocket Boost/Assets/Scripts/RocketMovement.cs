@@ -33,47 +33,62 @@ public class RocketMovement : MonoBehaviour
     void RotateRocket()
     {
         if (Input.GetKey(KeyCode.A))
-        {
-            ApplyRotation(Vector3.forward);
-            if (!rightThrusterVFX.isPlaying)
-                rightThrusterVFX.Play();
-        }
+            RotateRocketLeft();
         else if (Input.GetKey(KeyCode.D))
-        {
-            ApplyRotation(Vector3.back);
-            if (!leftThrusterVFX.isPlaying)
-                leftThrusterVFX.Play();
-        }
+            RotateRocketRight();
         else
-        {
-            rightThrusterVFX.Stop();
-            leftThrusterVFX.Stop();
-        }
+            StopRocketRotation();
     }
 
     void ThrustRocket()
     {
         if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
-        {
-            myRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
-
-            if (!myAudioSource.isPlaying)
-                myAudioSource.PlayOneShot(thrustSFX, thrustSFXVolume);
-
-            if (!baseThrusterVFX.isPlaying)
-                baseThrusterVFX.Play();
-        }
+            StartThrusting();
         else
-        {
-            myAudioSource.Stop();
-            baseThrusterVFX.Stop();
-        }
+            StopThrusting();
+    }
+
+    void RotateRocketLeft()
+    {
+        ApplyRotation(Vector3.forward);
+        if (!rightThrusterVFX.isPlaying)
+            rightThrusterVFX.Play();
+    }
+
+    void RotateRocketRight()
+    {
+        ApplyRotation(Vector3.back);
+        if (!leftThrusterVFX.isPlaying)
+            leftThrusterVFX.Play();
     }
 
     void ApplyRotation(Vector3 vector)
     {
-        myRigidbody.freezeRotation = true; // Manually overrides physics conflict.
+        myRigidbody.freezeRotation = true;
         transform.Rotate(vector * rotationThrust * Time.deltaTime);
-        myRigidbody.freezeRotation = false; // Enable physics system again.
+        myRigidbody.freezeRotation = false;
+    }
+
+    void StopRocketRotation()
+    {
+        rightThrusterVFX.Stop();
+        leftThrusterVFX.Stop();
+    }
+
+    void StartThrusting()
+    {
+        myRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+
+        if (!myAudioSource.isPlaying)
+            myAudioSource.PlayOneShot(thrustSFX, thrustSFXVolume);
+
+        if (!baseThrusterVFX.isPlaying)
+            baseThrusterVFX.Play();
+    }
+
+    void StopThrusting()
+    {
+        myAudioSource.Stop();
+        baseThrusterVFX.Stop();
     }
 }
