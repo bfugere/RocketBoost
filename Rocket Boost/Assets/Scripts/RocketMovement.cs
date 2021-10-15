@@ -10,6 +10,11 @@ public class RocketMovement : MonoBehaviour
     [SerializeField] AudioClip thrustSFX;
     [SerializeField] [Range(0, 1)] float thrustSFXVolume = 1f;
 
+    [Header("VFX Data")]
+    [SerializeField] ParticleSystem baseThrusterVFX;
+    [SerializeField] ParticleSystem leftThrusterVFX;
+    [SerializeField] ParticleSystem rightThrusterVFX;
+
     Rigidbody myRigidbody;
     AudioSource myAudioSource;
 
@@ -28,10 +33,22 @@ public class RocketMovement : MonoBehaviour
     void RotateRocket()
     {
         if (Input.GetKey(KeyCode.A))
+        {
             ApplyRotation(Vector3.forward);
-
+            if (!rightThrusterVFX.isPlaying)
+                rightThrusterVFX.Play();
+        }
         else if (Input.GetKey(KeyCode.D))
+        {
             ApplyRotation(Vector3.back);
+            if (!leftThrusterVFX.isPlaying)
+                leftThrusterVFX.Play();
+        }
+        else
+        {
+            rightThrusterVFX.Stop();
+            leftThrusterVFX.Stop();
+        }
     }
 
     void ThrustRocket()
@@ -40,12 +57,17 @@ public class RocketMovement : MonoBehaviour
         {
             myRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
 
-            // Thrust SFX
             if (!myAudioSource.isPlaying)
                 myAudioSource.PlayOneShot(thrustSFX, thrustSFXVolume);
+
+            if (!baseThrusterVFX.isPlaying)
+                baseThrusterVFX.Play();
         }
         else
+        {
             myAudioSource.Stop();
+            baseThrusterVFX.Stop();
+        }
     }
 
     void ApplyRotation(Vector3 vector)

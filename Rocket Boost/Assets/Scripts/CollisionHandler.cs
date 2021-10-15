@@ -14,6 +14,10 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] AudioClip crashSFX;
     [SerializeField] [Range(0, 1)] float crashSFXVolume = 0.2f;
 
+    [Header("VFX Data")]
+    [SerializeField] ParticleSystem victoryVFX;
+    [SerializeField] ParticleSystem crashVFX;
+
     RocketMovement rocketMovementScript;
     AudioSource myAudioSource;
 
@@ -72,7 +76,8 @@ public class CollisionHandler : MonoBehaviour
     IEnumerator StartVictorySequence(float waitTime)
     {
         isTransitioningStates = true;
-        // TODO: Add Victory VFX
+
+        victoryVFX.Play();
         myAudioSource.Stop();
         myAudioSource.PlayOneShot(victorySFX, victorySFXVolume);
         rocketMovementScript.enabled = false;
@@ -86,7 +91,8 @@ public class CollisionHandler : MonoBehaviour
     IEnumerator StartCrashSequence(float waitTime)
     {
         isTransitioningStates = true;
-        // TODO: Add Crash VFX
+
+        crashVFX.Play();
         myAudioSource.Stop();
         myAudioSource.PlayOneShot(crashSFX, crashSFXVolume);
         rocketMovementScript.enabled = false;
