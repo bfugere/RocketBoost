@@ -21,6 +21,8 @@ public class Oscillator : MonoBehaviour
 
     void Oscillate()
     {
+        if (period <= Mathf.Epsilon)
+            return;
         float cycles = Time.time / period;          // Grows over time
         const float TAU = Mathf.PI * 2;             // Constant value of 6.283
         float rawSinWave = Mathf.Sin(cycles * TAU); // -1 to 1
